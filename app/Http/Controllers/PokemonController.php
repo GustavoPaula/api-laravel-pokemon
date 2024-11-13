@@ -8,14 +8,10 @@ use Illuminate\Http\Request;
 
 class PokemonController extends Controller
 {
-  public PokemonService $pokemonService;
+  public function __construct(private PokemonService $pokemonService)
+  {}
 
-  public function __construct(PokemonService $pokemonService)
-  {
-    $this->pokemonService = $pokemonService;
-  }
-
-  public function store(Request $request)
+  public function store(Request $request): array
   {
     $pokemon = $request['pokemon'];
 
