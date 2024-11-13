@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\TesteController;
+use App\Http\Controllers\PokemonController;
 
-Route::get('/', [TesteController::class, 'create']);
-Route::get('/fetch', [TesteController::class, 'fetchPokemon']);
+Route::post('/pokemon', [PokemonController::class, 'store']);
