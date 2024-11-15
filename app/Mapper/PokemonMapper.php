@@ -34,14 +34,3 @@ class PokemonMapper
     return $mapper;
   }
 }
-
-// $mapper = [
-//   'Abilities'=>[
-//     'name'=>$pokemon['abilities'][0]['ability']['name'],
-//     'url'=>$pokemon['abilities'][0]['ability']['url'],
-//   ],
-//   'Cries'=>[
-//     'latest'=>$pokemon['cries']['latest'],
-//     'legacy'=>$pokemon['cries']['legacy']
-//     ]
-// ];
