@@ -5,11 +5,11 @@
   - nome do pokemon e as habilidades;
 [] Criar Model
   - pokemons
-    - id -> autoIncrement
+    - id -> bigIncrements('id')
     - name -> string
   - abilities
-    - id -> autoIncrement
+    - id -> bigIncrements('id')
     - name -> string
-    - id_pokemon
+    - pokemon_id -> unsignedBigInteger
 [] Criar Repository para salvar os dados na tabela do banco MySQL
 [] Criar Job para enviar dados da API pokemon para outra API ( ainda vamos definir quem vai receber esses dados )

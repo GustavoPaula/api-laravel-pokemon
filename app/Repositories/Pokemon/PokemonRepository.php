@@ -2,7 +2,7 @@
 
 namespace App\Repositories\Pokemon;
 
-use App\Models\Pokemons;
+use App\Models\Pokemon\Pokemons;
 
 class PokemonRepository
 {
