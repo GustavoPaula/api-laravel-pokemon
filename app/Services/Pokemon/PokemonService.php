@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Pokemon;
 
 use Illuminate\Support\Facades\Http;
-use App\Mapper\PokemonMapper;
+use App\Mapper\Pokemon\PokemonMapper;
 use App\Repositories\Pokemon\PokemonRepository;
 
 class PokemonService

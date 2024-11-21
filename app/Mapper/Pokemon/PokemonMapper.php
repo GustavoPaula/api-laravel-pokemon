@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Mapper;
+namespace App\Mapper\Pokemon;
 
 use Illuminate\Http\Client\Response;
 
