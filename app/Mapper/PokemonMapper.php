@@ -15,20 +15,9 @@ class PokemonMapper
         return $ability['ability']['name'];
       }, $array['abilities']),
 
-      "Cries" => array_map(function ($cry) {
-        return $cry;
-      }, $array['cries']),
-
       "Forms" => array_map(function ($form) {
         return $form;
-      }, $array['forms']),
-
-      "Games Indices" => array_map(function ($gameIndice) {
-        return [
-          "Game Index" => $gameIndice['game_index'],
-          "Version Name" => $gameIndice['version']['name']
-        ];
-      }, $array['game_indices'])
+      }, $array['forms'])
     ];
 
     return $mapper;

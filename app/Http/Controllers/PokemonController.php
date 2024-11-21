@@ -11,7 +11,7 @@ class PokemonController extends Controller
   public function __construct(private PokemonService $pokemonService)
   {}
 
-  public function store(Request $request): array
+  public function store(Request $request)
   {
     $pokemon = $request['pokemon'];
 
