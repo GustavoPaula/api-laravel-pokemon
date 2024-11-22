@@ -16,7 +16,7 @@ class PokemonMapper
       }, $array['abilities']),
 
       "Forms" => array_map(function ($form) {
-        return $form;
+        return $form['name'];
       }, $array['forms'])
     ];
 

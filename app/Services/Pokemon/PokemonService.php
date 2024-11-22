@@ -16,7 +16,24 @@ class PokemonService
     $url = 'https://pokeapi.co/api/v2/pokemon/'.$pokemon;
     $response = Http::get($url);
     $mapper = PokemonMapper::fromApiToDB($response);
-    //$repository = $this->pokemonRepository->createPokemon($mapper);
-    return $mapper;
+    
+    foreach($mapper['Forms'] as $forms)
+    {
+      $pokemon = $this->pokemonRepository->createPokemon($forms);
+    }
+
+    $abilities = [];
+
+    foreach($mapper['Abilities'] as $ability)
+    {
+      array_push($abilities, $this->pokemonRepository->createAbilities($ability, $pokemon['id']));
+    }
+
+    $repository = [
+      "Name" => $pokemon,
+      "Abilities" => $abilities
+    ];
+    
+    return $repository;
   }
 }
