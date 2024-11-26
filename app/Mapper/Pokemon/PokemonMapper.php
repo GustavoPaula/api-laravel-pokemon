@@ -11,13 +11,17 @@ class PokemonMapper
     $array = json_decode($pokemon, TRUE);
 
     $mapper = [
-      "Abilities" => array_map(function ($ability) {
-        return $ability['ability']['name'];
-      }, $array['abilities']),
-
       "Forms" => array_map(function ($form) {
-        return $form['name'];
-      }, $array['forms'])
+        return [
+          'name' => $form['name']
+        ];
+      }, $array['forms']),
+
+      "Abilities" => array_map(function ($ability) {
+        return [
+          "ability" => $ability['ability']['name']
+        ];
+      }, $array['abilities']),
     ];
 
     return $mapper;

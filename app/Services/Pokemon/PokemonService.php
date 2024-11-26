@@ -4,6 +4,7 @@ namespace App\Services\Pokemon;
 
 use Illuminate\Support\Facades\Http;
 use App\Mapper\Pokemon\PokemonMapper;
+use App\Models\Pokemon\Pokemon;
 use App\Repositories\Pokemon\PokemonRepository;
 
 class PokemonService
@@ -16,24 +17,22 @@ class PokemonService
     $url = 'https://pokeapi.co/api/v2/pokemon/'.$pokemon;
     $response = Http::get($url);
     $mapper = PokemonMapper::fromApiToDB($response);
-    
-    foreach($mapper['Forms'] as $forms)
+
+    //$pokemon = $this->pokemonRepository->createPokemon($mapper['Forms']);
+    foreach($mapper as $elements)
     {
-      $pokemon = $this->pokemonRepository->createPokemon($forms);
+      //dd($elements);
+      $pokemon = $this->pokemonRepository->createPokemon($elements);
+      // if($key === 'Forms'){
+      //   $pokemon = $this->pokemonRepository->createPokemon($value);
+      // }
+
+    //   if($key === 'Abilities')
+    //   {
+    //     $this->pokemonRepository->createAbilities($value);
+    //   }
     }
-
-    $abilities = [];
-
-    foreach($mapper['Abilities'] as $ability)
-    {
-      array_push($abilities, $this->pokemonRepository->createAbilities($ability, $pokemon['id']));
-    }
-
-    $repository = [
-      "Name" => $pokemon,
-      "Abilities" => $abilities
-    ];
     
-    return $repository;
+    return $mapper['Forms'];
   }
 }

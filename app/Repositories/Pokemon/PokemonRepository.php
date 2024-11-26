@@ -2,25 +2,25 @@
 
 namespace App\Repositories\Pokemon;
 
-use App\Models\Pokemon\Abilities;
-use App\Models\Pokemon\Pokemons;
+use App\Models\Pokemon\Pokemon;
 
 class PokemonRepository
 {
-  public function createPokemon($request)
+  public function __construct(private Pokemon $pokemonModel)
+  {}
+
+  public function createPokemon(array $request)
   {
-    $pokemon = new Pokemons;
-    $pokemon->name = $request;
-    $pokemon->save();
-    return $pokemon;
+    //$pokemon = new Pokemon;
+    //DB::table('pokemons')->insert($request);
+    //$pokemon->abilities()->createMany($request);
+    return Pokemon::create([
+      'name' => $request
+    ]);
   }
 
-  public function createAbilities($request, $pokemonId)
+  public function createAbilities($pokemon)
   {
-    $abilities = new Abilities;
-    $abilities->name = $request;
-    $abilities->pokemon_id = $pokemonId;
-    $abilities->save();
-    return $abilities;
+    return $this->pokemonModel->abilities()->createMany($pokemon);
   }
 }
