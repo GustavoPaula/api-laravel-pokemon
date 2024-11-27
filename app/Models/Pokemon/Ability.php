@@ -12,4 +12,9 @@ class Ability extends Model
         'name',
         'pokemon_id'
     ];
+
+    public function service()
+    {
+        return $this->belongsTo(Pokemon::class, 'pokemon_id', 'id');
+    }
 }
