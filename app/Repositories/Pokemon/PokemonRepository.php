@@ -11,10 +11,7 @@ class PokemonRepository
 
   public function createPokemon(array $request)
   {
-    $pokemon = Pokemon::create([
-      'name' => $request['name']
-    ]);
-
+    $pokemon = $this->pokemonModel->create($request);
     $pokemon->abilities()->createMany($request['abilities']);
 
     return $pokemon;
