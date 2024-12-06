@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Contracts\Validation\Validator;
+use App\DTO\Pokemon\PokemonDTO;
 
 class StorePokemonRequest extends FormRequest
 {
@@ -44,5 +45,10 @@ class StorePokemonRequest extends FormRequest
             'pokemon.min' => 'O campo pokemon deve ter no mínimo 3 caracteres',
             'pokemon.max' => 'O campo pokemon deve ter no máximo 15 caracteres',
         ];
+    }
+
+    public function getData(): PokemonDTO
+    {
+        return PokemonDTO::create($this->all());
     }
 }

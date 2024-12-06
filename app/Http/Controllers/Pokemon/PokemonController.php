@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Pokemon;
 
+use App\DTO\Pokemon\PokemonDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StorePokemonRequest;
 use App\Services\Pokemon\PokemonService;
@@ -13,9 +14,9 @@ class PokemonController extends Controller
 
   public function store(StorePokemonRequest $request)
   {
-    $data = $request->validated();
-    $pokemon = $data['pokemon'];
+    $request->validated();
+    $data = $request->getData();
 
-    return $this->pokemonService->httpRequest($pokemon);
+    return $this->pokemonService->httpRequest($data);
   }
 }
