@@ -19,4 +19,11 @@ class PokemonDTO
   {
     return $this->pokemon;
   }
+
+  public function toArray(): array
+  {
+    return [
+      'pokemon' => $this->pokemon
+    ];
+  }
 }

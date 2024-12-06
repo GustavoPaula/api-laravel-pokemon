@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Pokemon;
 
-use App\DTO\Pokemon\PokemonDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StorePokemonRequest;
 use App\Services\Pokemon\PokemonService;
