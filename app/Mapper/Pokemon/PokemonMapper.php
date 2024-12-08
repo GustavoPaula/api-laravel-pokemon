@@ -2,6 +2,7 @@
 
 namespace App\Mapper\Pokemon;
 
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\Client\Response;
 
 class PokemonMapper
@@ -20,5 +21,10 @@ class PokemonMapper
     ];
 
     return $mapper;
+  }
+
+  public static function fromDbToApi(HasMany $pokemon):array
+  {
+    return $pokemon->HasMany(PokemonMapper::class, 'pokemon_id', 'id');
   }
 }
