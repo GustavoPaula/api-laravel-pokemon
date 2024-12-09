@@ -4,6 +4,7 @@ namespace App\Mapper\Pokemon;
 
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\Client\Response;
+use phpDocumentor\Reflection\PseudoTypes\True_;
 
 class PokemonMapper
 {
@@ -23,8 +24,23 @@ class PokemonMapper
     return $mapper;
   }
 
-  public static function fromDbToApi(HasMany $pokemon):array
+  public static function fromDbToApi($pokemon, $abilities):array
   {
-    return $pokemon->HasMany(PokemonMapper::class, 'pokemon_id', 'id');
-  }
+    $array = [
+        'abilities' => $abilities->toArray(),
+        'pokemon' => $pokemon->toArray()
+    ];
+    $mapper = [
+    'id' => $array['pokemon']['id'],
+    'name' => $array['pokemon']['name'],
+    'updated_at' => $array['pokemon']['updated_at'],
+    'created_at' => $array['pokemon']['created_at'],
+    'abilities' => array_map(function ($ability) {
+        return $ability;
+    }, $array['abilities']),
+];
+
+    return $mapper;
+
+    }
 }

@@ -10,7 +10,9 @@ use App\Repositories\Pokemon\PokemonRepository;
 class PokemonService
 {
   public function __construct(private PokemonRepository $pokemonRepository)
-  {}
+  {
+
+  }
 
   public function httpRequest(PokemonDTO $data)
   {
@@ -18,7 +20,10 @@ class PokemonService
     $response = Http::get($url);
     $mapper = PokemonMapper::fromApiToDB($response);
     $pokemon = $this->pokemonRepository->createPokemon($mapper);
-    
-    return $pokemon;
+    $abilities = $this->pokemonRepository->getPokemon($pokemon->id);
+
+    $mapperPokemon = PokemonMapper::fromDbToApi($pokemon, $abilities);
+
+    return $mapperPokemon;
   }
 }

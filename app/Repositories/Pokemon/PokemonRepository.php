@@ -3,6 +3,7 @@
 namespace App\Repositories\Pokemon;
 
 use App\Models\Pokemon\Pokemon;
+use Illuminate\Database\Eloquent\Collection;
 
 class PokemonRepository
 {
@@ -17,8 +18,8 @@ class PokemonRepository
     return $pokemon;
   }
 
-  public function getPokemon(int $pokemonId): Pokemon
+  public function getPokemon(int $pokemonId): Collection
   {
-    
+    return Pokemon::find($pokemonId)->abilities;
   }
 }
