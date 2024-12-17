@@ -16,3 +16,18 @@ services:
       - '3306'
     volumes:
       - "./db-pokemon/data:/var/lib/mysql"
+  
+  redis-server:
+    image: redis:latest
+    container_name: redis-server
+    restart: always
+    ports:
+      - '6379:6379'
+    env_file:
+      - path: .env
+    environment:
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+      - REDIS_PORT=${REDIS_PORT}
+      - REDIS_DATABASE=${REDIS_DATABASE}
+    volumes:
+      - "./redis-server/data:/root/redis"
