@@ -20,6 +20,7 @@ class PokemonRepository
 
   public function getPokemon(int $pokemonId): Collection
   {
-    return Pokemon::find($pokemonId)->abilities;
+    $pokemonAbilities = Pokemon::find($pokemonId)->abilities;
+    return $pokemonAbilities;
   }
 }

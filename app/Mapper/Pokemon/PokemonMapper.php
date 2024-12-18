@@ -24,23 +24,23 @@ class PokemonMapper
     return $mapper;
   }
 
-  public static function fromDbToApi($pokemon, $abilities):array
+  public static function fromDBToApi($pokemon, $abilities): array
   {
     $array = [
-        'abilities' => $abilities->toArray(),
-        'pokemon' => $pokemon->toArray()
+      'pokemon' => $pokemon->toArray(),
+      'abilities' => $abilities->toArray()
     ];
+
     $mapper = [
-    'id' => $array['pokemon']['id'],
-    'name' => $array['pokemon']['name'],
-    'updated_at' => $array['pokemon']['updated_at'],
-    'created_at' => $array['pokemon']['created_at'],
-    'abilities' => array_map(function ($ability) {
+      'id' => $array['pokemon']['id'],
+      'name' => $array['pokemon']['name'],
+      'updated_at' => $array['pokemon']['updated_at'],
+      'created_at' => $array['pokemon']['created_at'],
+      'abilities' => array_map(function ($ability){
         return $ability;
-    }, $array['abilities']),
-];
+      }, $array['abilities'])
+    ];
 
     return $mapper;
-
-    }
+  }
 }
