@@ -31,3 +31,10 @@ services:
       - REDIS_DATABASE=${REDIS_DATABASE}
     volumes:
       - "./redis-server/data:/root/redis"
+
+  api:
+    image: ./Dockerfile
+    depends_on:
+      - db-pokemon
+      - redis-server
+
