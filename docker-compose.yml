@@ -4,19 +4,18 @@ services:
     container_name: db-pokemon
     restart: always
     env_file:
-      - path: .env
+      - .env
     environment:
       MYSQL_DATABASE: ${DB_DATABASE}
-      MYSQL_USER: ${DB_USERNAME}
-      MYSQL_PASSWORD: ${DB_PASSWORD}
       MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
     ports:
       - '3306:3306'
-    expose:
-      - '3306'
     volumes:
       - "./db-pokemon/data:/var/lib/mysql"
-  
+    networks:
+      - laravel-network
+
   redis-server:
     image: redis:latest
     container_name: redis-server
@@ -24,10 +23,34 @@ services:
     ports:
       - '6379:6379'
     env_file:
-      - path: .env
+      - .env
     environment:
       - REDIS_PASSWORD=${REDIS_PASSWORD}
       - REDIS_PORT=${REDIS_PORT}
       - REDIS_DATABASE=${REDIS_DATABASE}
     volumes:
       - "./redis-server/data:/root/redis"
+    networks:
+      - laravel-network
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: laravel-app
+    depends_on:
+      - db-pokemon
+      - redis-server
+    ports:
+      - '8000:8000'
+    volumes:
+      - ".:/var/www/html"
+    environment:
+      DB_HOST: db-pokemon
+      REDIS_HOST: redis-server
+    networks:
+      - laravel-network
+
+networks:
+  laravel-network:
+    driver: bridge
