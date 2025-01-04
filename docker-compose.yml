@@ -17,7 +17,7 @@ services:
     volumes:
       - "./application_data/db/data:/var/lib/mysql"
     networks:
-      - laravel_app
+      - src_default
   
   redis:
     image: redis:latest
@@ -34,25 +34,35 @@ services:
     volumes:
       - "./application_data/redis/data:/root/redis"
     networks:
-      - laravel_app
+      - src_default
 
   app:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: docker/Dockerfile
     container_name: app
     restart: always
     tty: true
     depends_on:
       - redis
       - db
+      - nginx
     ports:
-      - "8000:8000"
+      - "80:80"
     volumes:
       - ".:/var/www/html"
     networks:
-      - laravel_app
-
+      - src_default
+    
+  nginx:
+    image: nginx:alpine
+    container_name: nginx
+    ports:
+      - "8000:80"
+    volumes:
+      - .:/var/www
+      - ./docker/nginx/default.conf:/etc/nginx/config.d/default.conf
+    networks:
+      - src_default
 networks:
-  laravel_app:
-    driver: bridge
+    src_default:

@@ -3,10 +3,14 @@ FROM php:8.3-fpm
 
 # Instalar pacotes necessários no Debian (imagem base do PHP)
 RUN apt-get update && apt-get install -y \
-    libpng-dev libjpeg-dev libfreetype6-dev zip git unzip \
+    libpng-dev libjpeg-dev libfreetype6-dev zip git unzip nginx \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install gd pdo pdo_mysql \
+    && docker-php-ext-install gd pdo pcntl pdo_mysql \
     && apt-get clean
+
+RUN pecl install --onlyreqdeps --force redis \
+    && rm -rf /tmp/pear \
+    && docker-php-ext-enable redis
 
 # Instalar o Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
@@ -21,11 +25,10 @@ COPY . .
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
 # Expor as portas necessárias
-EXPOSE 9000
-EXPOSE 8000
+EXPOSE 80 8000
 
 # Copiar o script de inicialização
-COPY start.sh /start.sh
+COPY /docker/start.sh /start.sh
 
 RUN chmod +x /start.sh
 
