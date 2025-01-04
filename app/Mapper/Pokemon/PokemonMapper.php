@@ -3,6 +3,7 @@
 namespace App\Mapper\Pokemon;
 
 use Illuminate\Http\Client\Response;
+use App\Models\Pokemon\Pokemon;
 
 class PokemonMapper
 {
@@ -22,22 +23,9 @@ class PokemonMapper
     return $mapper;
   }
 
-  public static function fromDBToApi($pokemon, $abilities): array
+  public static function fromDBToApi(Pokemon $pokemon): array
   {
-    $array = [
-      'pokemon' => $pokemon->toArray(),
-      'abilities' => $abilities->toArray()
-    ];
-
-    $mapper = [
-      'id' => $array['pokemon']['id'],
-      'name' => $array['pokemon']['name'],
-      'updated_at' => $array['pokemon']['updated_at'],
-      'created_at' => $array['pokemon']['created_at'],
-      'abilities' => array_map(function ($ability){
-        return $ability;
-      }, $array['abilities'])
-    ];
+    $mapper = $pokemon->toArray();
 
     return $mapper;
   }
