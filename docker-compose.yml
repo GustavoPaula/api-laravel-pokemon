@@ -9,6 +9,7 @@ services:
       MYSQL_DATABASE: ${DB_DATABASE}
       MYSQL_USER: ${DB_USERNAME}
       MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_USERNAME: ${DB_ROOT_USERNAME}
       MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
     ports:
       - "3306:3306"
@@ -35,11 +36,21 @@ services:
       - "./application_data/redis/data:/root/redis"
     networks:
       - src_default
+  nginx:
+    image: nginx:alpine
+    container_name: nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ".:/var/www"
+      - "./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf"
+    networks:
+      - src_default
 
   app:
     build:
       context: .
-      dockerfile: docker/Dockerfile
+      dockerfile: docker/php/Dockerfile
     container_name: app
     restart: always
     tty: true
@@ -48,21 +59,11 @@ services:
       - db
       - nginx
     ports:
-      - "80:80"
+      - "9000:9000"
     volumes:
-      - ".:/var/www/html"
-    networks:
-      - src_default
-    
-  nginx:
-    image: nginx:alpine
-    container_name: nginx
-    ports:
-      - "8000:80"
-    volumes:
-      - .:/var/www
-      - ./docker/nginx/default.conf:/etc/nginx/config.d/default.conf
+      - ".:/var/www"
     networks:
       - src_default
 networks:
-    src_default:
+  src_default:
+    driver: bridge
