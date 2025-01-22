@@ -19,7 +19,7 @@ services:
       - "./application_data/db/data:/var/lib/mysql"
     networks:
       - src_default
-  
+
   redis:
     image: redis:latest
     container_name: redis
@@ -36,6 +36,7 @@ services:
       - "./application_data/redis/data:/root/redis"
     networks:
       - src_default
+
   nginx:
     image: nginx:alpine
     container_name: nginx
@@ -60,6 +61,23 @@ services:
       - nginx
     ports:
       - "9000:9000"
+    volumes:
+      - ".:/var/www"
+    networks:
+      - src_default
+
+  horizon:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    container_name: horizon
+    restart: always
+    tty: true
+    depends_on:
+      - redis
+      - db
+      - nginx
+    command: ["sh","/var/www/entrypoint.sh"]
     volumes:
       - ".:/var/www"
     networks:
