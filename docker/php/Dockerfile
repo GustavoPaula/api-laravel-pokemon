@@ -22,4 +22,4 @@ RUN chown -R www-data:www-data /app/storage /app/bootstrap/cache
 
 ENTRYPOINT ["./entrypoint.sh"]
 
-EXPOSE 80 8080
+EXPOSE 9000
