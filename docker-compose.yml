@@ -1,10 +1,25 @@
 services:
+  app:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    container_name: app
+    restart: always
+    tty: true
+    depends_on:
+      - redis
+      - db
+    ports:
+      - "8080:80"
+    volumes:
+      - ".:/app"
+    networks:
+      - src_default
+
   db:
     image: mysql:latest
     container_name: db
     restart: always
-    env_file:
-      - path: .env
     environment:
       MYSQL_DATABASE: ${DB_DATABASE}
       MYSQL_USER: ${DB_USERNAME}
@@ -13,8 +28,6 @@ services:
       MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
     ports:
       - "3306:3306"
-    expose:
-      - "3306"
     volumes:
       - "./application_data/db/data:/var/lib/mysql"
     networks:
@@ -26,8 +39,6 @@ services:
     restart: always
     ports:
       - "6379:6379"
-    env_file:
-      - path: .env
     environment:
       - REDIS_PASSWORD=${REDIS_PASSWORD}
       - REDIS_PORT=${REDIS_PORT}
@@ -36,34 +47,24 @@ services:
       - "./application_data/redis/data:/root/redis"
     networks:
       - src_default
+
   nginx:
     image: nginx:alpine
     container_name: nginx
     ports:
       - "80:80"
     volumes:
-      - ".:/var/www"
       - "./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf"
-    networks:
-      - src_default
-
-  app:
-    build:
-      context: .
-      dockerfile: docker/php/Dockerfile
-    container_name: app
-    restart: always
-    tty: true
+      - ".:/app"
     depends_on:
-      - redis
-      - db
-      - nginx
-    ports:
-      - "9000:9000"
-    volumes:
-      - ".:/var/www"
+      - app
     networks:
       - src_default
 networks:
   src_default:
-    driver: bridge
+
+volumes:
+  db:
+    driver: local
+  redis:
+    driver: local
