@@ -17,15 +17,15 @@ services:
       - src_default
 
   db:
-    image: mysql:latest
+    image: mysql:8.0.34
     container_name: db
     restart: always
     environment:
-      MYSQL_DATABASE: ${DB_DATABASE}
-      MYSQL_USER: ${DB_USERNAME}
-      MYSQL_PASSWORD: ${DB_PASSWORD}
-      MYSQL_ROOT_USERNAME: ${DB_ROOT_USERNAME}
-      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      - MYSQL_DATABASE=db
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=password
+      - MYSQL_ROOT_USERNAME=root
+      - MYSQL_ROOT_PASSWORD=password
     ports:
       - "3306:3306"
     volumes:
@@ -34,15 +34,15 @@ services:
       - src_default
   
   redis:
-    image: redis:latest
+    image: redis:alpine
     container_name: redis
     restart: always
     ports:
       - "6379:6379"
     environment:
-      - REDIS_PASSWORD=${REDIS_PASSWORD}
-      - REDIS_PORT=${REDIS_PORT}
-      - REDIS_DATABASE=${REDIS_DATABASE}
+      - REDIS_PASSWORD=redis
+      - REDIS_PORT=6379
+      - REDIS_DATABASE=redis
     volumes:
       - "./application_data/redis/data:/root/redis"
     networks:
