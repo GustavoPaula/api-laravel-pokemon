@@ -1,24 +1,22 @@
 services:
   db:
-    image: mysql:latest
     container_name: db
-    restart: always
-    env_file:
-      - path: .env
+    image: mysql:8.0.34
+    restart: unless-stopped
+    command: --default-authentication-plugin=caching_sha2_password
     environment:
-      MYSQL_DATABASE: ${DB_DATABASE}
-      MYSQL_USER: ${DB_USERNAME}
-      MYSQL_PASSWORD: ${DB_PASSWORD}
-      MYSQL_ROOT_USERNAME: ${DB_ROOT_USERNAME}
-      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
-    ports:
-      - "3306:3306"
-    expose:
-      - "3306"
+      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
+      - MYSQL_USER=${DB_USERNAME}
+      - MYSQL_PASSWORD=${DB_PASSWORD}
+      - MYSQL_DATABASE=${DB_DATABASE}
+      - MYSQL_ROOT_USERNAME=${DB_ROOT_USERNAME}
     volumes:
       - "./application_data/db/data:/var/lib/mysql"
+    ports:
+      - '${FORWARD_DB_PORT:-3306}:3306'
     networks:
       - src_default
+
 
   redis:
     image: redis:latest
@@ -27,7 +25,7 @@ services:
     ports:
       - "6379:6379"
     env_file:
-      - path: .env
+      - .env
     environment:
       - REDIS_PASSWORD=${REDIS_PASSWORD}
       - REDIS_PORT=${REDIS_PORT}
@@ -42,6 +40,8 @@ services:
     container_name: nginx
     ports:
       - "80:80"
+    depends_on:
+      - app
     volumes:
       - ".:/var/www"
       - "./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf"
@@ -58,7 +58,6 @@ services:
     depends_on:
       - redis
       - db
-      - nginx
     ports:
       - "9000:9000"
     volumes:
