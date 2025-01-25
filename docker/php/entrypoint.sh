@@ -1,13 +1,20 @@
 #!/bin/bash
 
-# Executa as migrações do banco de dados
-echo "Running migrations..."
-php artisan migrate --force || exit 1
+set -e  # Interrompe o script se qualquer comando falhar
 
-# Inicia o Horizon em background e redireciona os logs
-echo "Starting Horizon..."
+# Executar comandos do Laravel
+php artisan storage:link
+php artisan optimize
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache
+php artisan migrate --force
+
+# Iniciar o Horizon em background e redirecionar os logs
 php artisan horizon > /var/log/horizon.log 2>&1 &
 
-# Executa o comando principal do contêiner (por exemplo, php-fpm)
-echo "Starting main container process..."
-exec "$@"
+# Iniciar o PHP-FPM em segundo plano
+php-fpm &
+
+# Iniciar o Nginx como processo principal
+nginx -g "daemon off;" # daemon off mantem o container ativo

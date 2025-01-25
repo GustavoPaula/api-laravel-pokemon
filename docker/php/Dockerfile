@@ -27,7 +27,7 @@ COPY . .
 RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
 
 # Expor as portas necessárias
-EXPOSE 9000
+EXPOSE 80 8080
 
 # Usar entrypoint.sh como ENTRYPOINT
 COPY ./docker/php/entrypoint.sh /usr/local/bin/entrypoint.sh

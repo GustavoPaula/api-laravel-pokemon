@@ -4,10 +4,7 @@ namespace App\Jobs;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
-use App\Models\Pokemon\Ability;
-use App\Models\Pokemon\Pokemon;
-use App\Services\Pokemon\PokemonService;
-use App\Providers\AppServiceProvider;
+
 
 class CreatePokemonJob implements ShouldQueue
 {
