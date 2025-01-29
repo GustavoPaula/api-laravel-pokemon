@@ -3,7 +3,6 @@ services:
     container_name: db
     image: mysql:8.0.34
     restart: unless-stopped
-    command: --default-authentication-plugin=caching_sha2_password
     environment:
       - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
       - MYSQL_USER=${DB_USERNAME}
@@ -13,19 +12,15 @@ services:
     volumes:
       - "./application_data/db/data:/var/lib/mysql"
     ports:
-      - '${FORWARD_DB_PORT:-3306}:3306'
+      - '3306:3306'
     networks:
       - src_default
-
-
   redis:
     image: redis:latest
     container_name: redis
-    restart: always
+    restart: unless-stopped
     ports:
-      - "6379:6379"
-    env_file:
-      - .env
+      - '6379:6379'
     environment:
       - REDIS_PASSWORD=${REDIS_PASSWORD}
       - REDIS_PORT=${REDIS_PORT}
@@ -34,49 +29,31 @@ services:
       - "./application_data/redis/data:/root/redis"
     networks:
       - src_default
-
   nginx:
-    image: nginx:alpine
+    image: nginx:latest
     container_name: nginx
+    restart: unless-stopped
     ports:
       - "80:80"
-    depends_on:
-      - app
     volumes:
       - ".:/var/www"
       - "./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf"
+    depends_on:
+      - app
     networks:
       - src_default
 
   app:
+    container_name: app
     build:
       context: .
       dockerfile: docker/php/Dockerfile
-    container_name: app
-    restart: always
-    tty: true
+    restart: unless-stopped
     depends_on:
       - redis
       - db
     ports:
       - "9000:9000"
-    volumes:
-      - ".:/var/www"
-    networks:
-      - src_default
-
-  horizon:
-    build:
-      context: .
-      dockerfile: docker/php/Dockerfile
-    container_name: horizon
-    restart: always
-    tty: true
-    depends_on:
-      - redis
-      - db
-      - nginx
-    command: ["sh","/var/www/entrypoint.sh"]
     volumes:
       - ".:/var/www"
     networks:

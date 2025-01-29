@@ -26,5 +26,7 @@ COPY . .
 # Ajustar permissões para os diretórios de storage e cache
 RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
 
+ENTRYPOINT [ "./entrypoint.sh" ]
+
 # Expor as portas necessárias
 EXPOSE 9000

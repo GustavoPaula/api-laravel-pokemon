@@ -4,7 +4,7 @@
 php artisan migrate
 
 # Executar o horizon
-php artisan horizon
+php artisan horizon &
 
 # Iniciar Nginx
 nginx
