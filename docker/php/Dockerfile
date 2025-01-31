@@ -18,13 +18,13 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 RUN apt install nodejs npm -y
 
 # Definir o diretório do app
-WORKDIR /var/www
+WORKDIR /app
 
 # Copiar todos os arquivos para dentro do container
 COPY . .
 
 # Ajustar permissões para os diretórios de storage e cache
-RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
+RUN chown -R www-data:www-data /app/storage /app/bootstrap/cache
 
 ENTRYPOINT [ "./entrypoint.sh" ]
 
