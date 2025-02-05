@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Pokemon;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StorePokemonRequest;
 use App\Services\Pokemon\PokemonService;
+use App\Jobs\AllPokemonsJob;
+
 
 class PokemonController extends Controller
 {
