@@ -9,7 +9,7 @@ use App\DTO\Pokemon\PokemonDTO;
 
 class PokemonJob implements ShouldQueue
 {
-    use Queueable;//, SerializesModels, Dispatchable, InteractsWithQueue;
+    use Queueable;
 
     /**
      * Create a new job instance.
@@ -20,14 +20,9 @@ class PokemonJob implements ShouldQueue
     /**
      * Execute the job.
      */
-    public function handle(): void
-    {
-        $array = [
-            "pokemon" => $this->pokemon
-        ];
-        
-        $data = PokemonDTO::create($array);
-        $pokemonService = app(PokemonService::class);
+    public function handle(PokemonService $pokemonService): void
+    {  
+        $data = new PokemonDTO($this->pokemon);
         $pokemonService->httpRequest($data);
     }
 }

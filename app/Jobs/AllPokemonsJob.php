@@ -8,7 +8,7 @@ use App\Jobs\PokemonJob;
 
 class AllPokemonsJob implements ShouldQueue
 {
-    use Queueable;//, Serializes, ModelsDispatchable, InteractsWithQueue;
+    use Queueable;
 
     /**
      * Create a new job instance.
