@@ -5,6 +5,8 @@ namespace App\Jobs;
 use App\Models\Pokemon\Pokemon;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
+use App\DTO\Pokemon\PokemonDTO;
+use App\Services\Pokemon\PokemonService;
 
 class PokemonJob implements ShouldQueue
 {
@@ -15,14 +17,15 @@ class PokemonJob implements ShouldQueue
      */
     public function __construct(private string $pokemon)
     {
-        $this->onQueue("pokemon-job");
+
     }
 
     /**
      * Execute the job.
      */
-    public function handle(): void
+    public function handle(PokemonService $pokemonService): void
     {
-        $this->pokemon;
+        $pokemonDTO = new PokemonDTO($this->pokemon);
+        $pokemonService->httpRequest($pokemonDTO);
     }
 }

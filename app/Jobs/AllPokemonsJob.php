@@ -10,17 +10,12 @@ class AllPokemonsJob implements ShouldQueue
 {
     use Queueable;
 
-    /**
-     * Create a new job instance.
-     */
+
     public function __construct(private array $pokemons)
     {
         
     }
 
-    /**
-     * Execute the job.
-     */
     public function handle(): void
     {
         foreach ($this->pokemons as $pokemon){
