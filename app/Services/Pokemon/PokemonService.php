@@ -16,19 +16,16 @@ class PokemonService
   {
     $url = 'https://pokeapi.co/api/v2/pokemon/'.$data->getPokemon();
     $response = Http::get($url);
-
     // Mapeia a resposta da API para o formato do banco de dados
     $mapperToDB = PokemonMapper::fromApiToDB($response);
-
     // Cria o Pokémon no banco de dados
     $pokemonModel = $this->pokemonRepository->createPokemon($mapperToDB);
-
     // Carrega o Pokémon com as habilidades associadas
     $pokemonAbilities = $this->pokemonRepository->getPokemon($pokemonModel->id);
-
     // Mapeia os dados do banco de dados para o formato da API
     $mapperToApi = PokemonMapper::fromDBToApi($pokemonModel, $pokemonAbilities);
 
     return $mapperToApi;
   }
+
 }

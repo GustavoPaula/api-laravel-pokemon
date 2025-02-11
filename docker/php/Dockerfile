@@ -1,4 +1,4 @@
-FROM php:8.4-fpm
+FROM php:8.3-fpm
 
 # Instalar pacotes necessários
 RUN apt-get update && apt-get install -y \
@@ -18,21 +18,15 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 RUN apt install nodejs npm -y
 
 # Definir o diretório do app
-WORKDIR /var/www
+WORKDIR /app
 
 # Copiar todos os arquivos para dentro do container
 COPY . .
 
 # Ajustar permissões para os diretórios de storage e cache
-RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
+RUN chown -R www-data:www-data /app/storage /app/bootstrap/cache
+
+ENTRYPOINT [ "./entrypoint.sh" ]
 
 # Expor as portas necessárias
-EXPOSE 80 8080
-
-# Usar entrypoint.sh como ENTRYPOINT
-COPY ./docker/php/entrypoint.sh /usr/local/bin/entrypoint.sh
-RUN chmod +x /usr/local/bin/entrypoint.sh
-ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
-
-# O CMD deve iniciar o processo principal (php-fpm ou supervisord)
-CMD ["php-fpm"]
+EXPOSE 9000
