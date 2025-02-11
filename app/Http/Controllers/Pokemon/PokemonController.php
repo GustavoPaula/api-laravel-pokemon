@@ -15,7 +15,8 @@ class PokemonController extends Controller
   {
     $request->validated();
     $data = $request->getData();
-
-    return $this->pokemonService->httpRequest($data);
+    $responseData = $this->pokemonService->httpRequest($data);
+  
+    return response()->json($responseData, 201);
   }
 }

@@ -12,14 +12,14 @@ class PokemonService
   public function __construct(private PokemonRepository $pokemonRepository)
   {}
 
-  public function httpRequest(PokemonDTO $data)
+  public function httpRequest(PokemonDTO $data): array
   {
     $url = 'https://pokeapi.co/api/v2/pokemon/'.$data->getPokemon();
     $response = Http::get($url);
     $mapperToDB = PokemonMapper::fromApiToDB($response);
     $pokemonModel = $this->pokemonRepository->createPokemon($mapperToDB);
-    $pokemonAbilities = $this->pokemonRepository->getPokemon($pokemonModel->id);
-    $mapperToApi = PokemonMapper::fromDBToApi($pokemonModel, $pokemonAbilities);
+    $pokemonWithAbilities = $this->pokemonRepository->getPokemon($pokemonModel->id);
+    $mapperToApi = PokemonMapper::fromDBToApi($pokemonWithAbilities);
 
     return $mapperToApi;
   }
