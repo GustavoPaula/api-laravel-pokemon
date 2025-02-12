@@ -29,4 +29,4 @@
       "created_at": "2024-12-06T00:26:20.000000Z",
     ]
   ]
-[] Criar Job para enviar dados da API pokemon para outra API ( ainda vamos definir quem vai receber esses dados )
+[X] Criar Job para realizar 150 request e salvar no banco de dados.
