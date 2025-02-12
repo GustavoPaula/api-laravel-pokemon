@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Redis;
+use App\Jobs\CreatePokemonJob;
 
 class CreatePokemonCommand extends Command
 {
@@ -25,8 +26,7 @@ class CreatePokemonCommand extends Command
      * Execute the console command.
      */
     public function handle()
-    {   
-        $redis = Redis::connection('default');
-        dd($redis->ping());
-    }
+    {
+        CreatePokemonJob::dispatch('pokemon'); 
+    }   
 }

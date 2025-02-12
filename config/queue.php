@@ -43,6 +43,14 @@ return [
             'after_commit' => false,
         ],
 
+        'pokemon' => [
+            'driver' => env('QUEUE_DRIVER'),
+            'connection' => 'default',
+            'queue' => 'pokemon',
+            'retry_after' => 240,
+            'block_for' => 5,
+        ],
+
         'beanstalkd' => [
             'driver' => 'beanstalkd',
             'host' => env('BEANSTALKD_QUEUE_HOST', 'localhost'),
